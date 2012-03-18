@@ -1,0 +1,77 @@
+<?php
+
+/**
+ * @file
+ * A demo add-on for the Drupal-to-Drupal module.
+ *
+ * A longer description will follow here.
+ */
+
+require_once 'includes/d2daddon.info.inc';
+require_once 'includes/d2daddon.remote_control.inc';
+require_once 'includes/d2daddon.publish_patterns.inc';
+
+/**
+ * Implements hook_menu_alter().
+ */
+function d2daddon_menu_alter(&$items) {
+  $items['admin/drupaltodrupal/addon'] = array(
+    'title' => 'Add Ons',
+    'page callback' => 'd2daddon_show_info',
+    'access arguments' => array('administer drupaltodrupal'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 55,
+  );
+  $items['admin/drupaltodrupal/addon/info'] = array(
+    'title' => 'Friends Info',
+    'page callback' => 'd2daddon_show_info',
+    'access arguments' => array('administer drupaltodrupal'),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => 1,
+  );
+  $items['admin/drupaltodrupal/addon/remote_control'] = array(
+    'title' => 'Remote Control',
+    'page callback' => 'd2daddon_remote_control',
+    'access arguments' => array('administer drupaltodrupal'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 2,
+  );
+  $items['admin/drupaltodrupal/addon/publish_patterns'] = array(
+    'title' => 'Publish Patterns',
+    'page callback' => 'd2daddon_publish_patterns',
+    'access arguments' => array('administer drupaltodrupal'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 3,
+  );
+  return $items;
+}
+/**
+ * Implements hook_drupaltodrupal_secure_rpc().
+ */
+function d2daddon_drupaltodrupal_secure_rpc() {
+  $methods = array();
+  $methods['d2daddon_remote_control'] = array(
+    'arguments' => array('code' => 'is_string'),
+    'callback' => 'd2daddon_srpc_remote_control',
+    'description' => 'runs code on remote instance',
+  );
+  $methods['d2daddon_info'] = array(
+    'arguments' => array(),
+    'callback' => 'd2daddon_srpc_info',
+    'description' => 'returns information about this instance',
+  );
+  $methods['d2daddon_push_patterns'] = array(
+    'arguments' => array('patterns' => 'is_string'),
+    'callback' => 'd2daddon_push_patterns',
+    'description' => 'publish public patterns to remote instance',
+  );
+  return $methods;
+}
+/**
+ * Implements hook_cron().
+ */
+function d2daddon_cron() {
+  if (variable_get('d2daddon_auto_publish', FALSE)) {
+    d2daddon_publish_public_patterns(FALSE);
+  }
+}

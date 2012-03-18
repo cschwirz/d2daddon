@@ -1,0 +1,7 @@
+name = D2D Add-On
+description = "A demo add-on for the Drupal-to-Drupal module"
+package = Drupal-to-Drupal
+core = 7.x
+files[] = d2daddon.module
+files[] = d2daddon.install
+dependencies[] = drupaltodrupal
