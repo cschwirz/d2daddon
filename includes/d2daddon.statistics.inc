@@ -47,32 +47,6 @@ function d2daddon_statistics_query($community, $query) {
   return $result;
 }
 function d2daddon_statistics_best_paper($communities) {
-  /*
-  $result = db_query('SELECT id, name, url, description, type FROM {statisticsserver_clients}');
-  $rows = array();
-  foreach ($result as $record) {
-    $server = url($record->url . "/xmlrpc.php");
-    $row = array();
-    $rpc_result = xmlrpc(
-      $server,
-      array('statisticsClient.query' => array('SELECT id, author, title, rating, votes FROM {statisticsclient_paper_' . $record->type . '} ORDER BY rating DESC LIMIT 1'))
-    );
-    if ($rpc_result === FALSE) {
-      $rows[] = array($record->name, 'Error retrieving information.');
-    }
-    else {
-      foreach ($rpc_result as $line) {
-        $row = array();
-        $row[] = $record->name;
-        $row[] = $line['author'];
-        $row[] = $line['title'];
-        $row[] = $line['rating'];
-        $row[] = $line['votes'];
-      }
-      $rows[] = $row;
-    }
-  }
-  */
   $rows = array();
   foreach ($communities as $community) {
     $result = d2daddon_statistics_query($community, 'SELECT author, title, rating, votes FROM {d2daddon_statistics_papers} ORDER BY rating DESC LIMIT 1');
@@ -190,7 +164,7 @@ function d2daddon_statistics_all_news($communities) {
       //$rows[] = array($community['name'], $result);
     }
   }
-  usort($rows, '_statisticsserver_compare_rating_asc');
+  usort($rows, '_d2daddon_compare_rating_asc');
   $build['node_table'] = array(
     '#theme' => 'table',
     '#header' => array('Community', 'Author', 'Title', 'Rating', 'Votes', 'Date'),
