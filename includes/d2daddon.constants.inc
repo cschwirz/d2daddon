@@ -1,0 +1,6 @@
+<?php
+
+define('D2DADDON_STATISTICS_AUTHOR', 'S. Balietti');
+define('D2DADDON_STATISTICS_COMMUNITY', 'QLectives Zurich');
+define('D2DADDON_STATISTICS_USER_COUNT', 64);
+define('D2DADDON_STATISTICS_NEWS_SET', 'a');

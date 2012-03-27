@@ -7,9 +7,12 @@
  * A longer description will follow here.
  */
 
+require_once 'includes/d2daddon.constants.inc';
 require_once 'includes/d2daddon.info.inc';
 require_once 'includes/d2daddon.remote_control.inc';
 require_once 'includes/d2daddon.publish_patterns.inc';
+require_once 'includes/d2daddon.create_statistics.inc';
+require_once 'includes/d2daddon.statistics.inc';
 
 /**
  * Implements hook_menu_alter().
@@ -36,6 +39,21 @@ function d2daddon_menu_alter(&$items) {
     'type' => MENU_LOCAL_TASK,
     'weight' => 2,
   );
+  $items['admin/drupaltodrupal/addon/statistics'] = array(
+    'title' => 'Remote Statistics',
+    'page callback' => 'd2daddon_show_statistics',
+    'access arguments' => array('administer drupaltodrupal'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 3,
+  );
+  $items['admin/drupaltodrupal/addon/statistics_config'] = array(
+    'title' => 'Configure Statistics',
+    'page callback' => 'd2daddon_configure_statistics',
+    'access arguments' => array('administer drupaltodrupal'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 4,
+  );
+  /*
   $items['admin/drupaltodrupal/addon/publish_patterns'] = array(
     'title' => 'Publish Patterns',
     'page callback' => 'd2daddon_publish_patterns',
@@ -43,6 +61,7 @@ function d2daddon_menu_alter(&$items) {
     'type' => MENU_LOCAL_TASK,
     'weight' => 3,
   );
+  */
   return $items;
 }
 /**
@@ -64,6 +83,16 @@ function d2daddon_drupaltodrupal_secure_rpc() {
     'arguments' => array('patterns' => 'is_string'),
     'callback' => 'd2daddon_push_patterns',
     'description' => 'publish public patterns to remote instance',
+  );
+  $methods['d2daddon_get_community_name'] = array(
+    'arguments' => array(),
+    'callback' => 'd2daddon_statistics_get_community_name',
+    'description' => 'returns the name of the community',
+  );
+  $methods['d2daddon_get_query_results'] = array(
+    'arguments' => array('query' => 'is_string'),
+    'callback' => 'd2daddon_statistics_get_query_results',
+    'description' => 'returns the result of a query on the database',
   );
   return $methods;
 }
