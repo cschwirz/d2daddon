@@ -250,7 +250,7 @@ function d2daddon_show_statistics() {
   return $build;
 }
 function d2daddon_statistics_get_news_sets() {
-  return array('a', 'b', 'c');
+  return array('a', 'b', 'c', 'd');
 }
 function d2daddon_configure_statistics_form() {
   $form = array();

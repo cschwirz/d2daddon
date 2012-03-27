@@ -78,13 +78,18 @@ function d2daddon_statistics_add_news() {
       array('title' => 'Current Driving Conditions Michigan', 'time' => 1276689600),
       array('title' => 'about the Workshop on "Coping with Crises in Complex Socio-Economic Systems"', 'time' => 1248523200),
     );
-
   $news['c'] =
     array(
       array('title' => 'Predicting crowd behaviour', 'time' => 1303387200),
       array('title' => 'How crowds move: because people want to be free', 'time' => 1303214400),
       array('title' => 'Who should pay for the police?', 'time' => 1276516800),
       array('title' => 'CCSS Conference pictures and videos online', 'time' => 1248523200),
+    );
+  $news['d'] =
+    array(
+      array('title' => 'The strange but extremely valuable science of how pedestrians behave', 'time' => 1324123200),
+      array('title' => 'Computational models to predict disasters', 'time' => 1308830400),
+      array('title' => 'QScience 2012', 'time' => 1325376000),
     );
   foreach ($news[$type] as $newsrec) {
     $id = db_insert($schema_name)
