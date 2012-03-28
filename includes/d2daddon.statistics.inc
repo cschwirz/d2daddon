@@ -224,10 +224,12 @@ function d2daddon_show_statistics() {
     '#type' => 'fieldset',
   );
   $communities = array();
-  $communities[] = array(
-    'name' => variable_get('d2daddon_statistics_community', D2DADDON_STATISTICS_COMMUNITY),
-    'id' => NULL,
-  );
+  if (variable_get('d2daddon_statistics_show_own_instance', D2DADDON_STATISTICS_SHOW_OWN_INSTANCE)) {
+    $communities[] = array(
+      'name' => variable_get('d2daddon_statistics_community', D2DADDON_STATISTICS_COMMUNITY),
+      'id' => NULL,
+    );
+  }
   $friends = drupaltodrupal_get_friends();
   foreach ($friends as $friend) {
     $error_string = '';
@@ -289,6 +291,12 @@ function d2daddon_configure_statistics_form() {
     '#maxlength' => 10,
     '#required' => TRUE,
   );
+  $form['show_own_instance'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show own instance'),
+    '#description' => t('If checked, own instance will be included into the statistics.'),
+    '#default_value' => variable_get('d2daddon_statistics_show_own_instance', D2DADDON_STATISTICS_SHOW_OWN_INSTANCE),
+  );
   $form['submit'] = array(
     '#type' => 'submit', 
     '#value' => t('Save & Create'),
@@ -316,6 +324,7 @@ function d2daddon_configure_statistics_form_submit($form, &$form_state) {
   drupaltodrupal_check_convert_int($user_count);
   variable_set('d2daddon_statistics_user_count', $user_count);
   variable_set('d2daddon_statistics_news_set', $form_state['values']['news_set']);
+  variable_set('d2daddon_statistics_show_own_instance', $form_state['values']['show_own_instance'] ? TRUE : FALSE);
   drupal_set_message(t('Settings have been saved.'));
   d2daddon_statistics_create_users();
   d2daddon_statistics_add_papers();
@@ -366,4 +375,3 @@ function d2daddon_statistics_get_query_results($arguments, $rpc_info) {
   }
   return $imploded_result;
 }
-

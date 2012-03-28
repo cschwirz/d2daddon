@@ -53,6 +53,7 @@ function d2daddon_uninstall() {
   variable_del('d2daddon_statistics_news_set');
   variable_del('d2daddon_statistics_community');
   variable_del('d2daddon_statistics_user_count');
+  variable_del('d2daddon_statistics_show_own_instance');
 }
 
 /**
